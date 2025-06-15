@@ -2,7 +2,7 @@
 
 A simple C# console application using **.NET** and **Entity Framework Core** to manage students and subjects in a SQL database. It demonstrates basic **CRUD operations** (Create, Read, Update, Delete) through the console interface.
 
-## Features
+# Features
 
 - Manage a list of students
   - Add new students
@@ -14,7 +14,7 @@ A simple C# console application using **.NET** and **Entity Framework Core** to 
   - Edit subject details
 - Uses **Entity Framework Core** with **SQL Server** for database access
 
-## Technologies Used
+# Technologies Used
 
 - C# (.NET 8 or .NET 7)
 - Entity Framework Core
