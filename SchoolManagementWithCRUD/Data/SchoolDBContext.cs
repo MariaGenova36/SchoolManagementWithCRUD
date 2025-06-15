@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SchoolManagementWithCRUD;
+using SchoolManagementWithCRUD.Models;
 
 
 public class SchoolDbContext : DbContext

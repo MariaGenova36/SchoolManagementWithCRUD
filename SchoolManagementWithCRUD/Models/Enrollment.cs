@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SchoolManagementWithCRUD
+namespace SchoolManagementWithCRUD.Models
 {
     public class Enrollment
     {
@@ -13,5 +13,6 @@ namespace SchoolManagementWithCRUD
 
         public int SubjectId { get; set; }
         public Subject Subject { get; set; }
+        public DateTime EnrollmentDate { get; set; }
     }
 }

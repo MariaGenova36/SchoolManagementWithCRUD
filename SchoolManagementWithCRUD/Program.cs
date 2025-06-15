@@ -1,6 +1,7 @@
 ﻿using SchoolManagementWithCRUD;
 using System;
 using System.Linq;
+using SchoolManagementWithCRUD.Models;
 
 class Program
 {
