@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SchoolManagementWithCRUD.Migrations
 {
     [DbContext(typeof(SchoolDbContext))]
-    [Migration("20250615173423_InitialCreate")]
+    [Migration("20250630063440_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -34,6 +34,9 @@ namespace SchoolManagementWithCRUD.Migrations
 
                     b.Property<DateTime>("EnrollmentDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.HasKey("StudentId", "SubjectId");
 

@@ -37,5 +37,19 @@ namespace SchoolManagementWithCRUD.Services
                 _context.SaveChanges();
             }
         }
+
+        public void DeleteSubject(int id)
+        {
+            var subject = _context.Subjects.Find(id);
+            if (subject == null)
+            {
+                Console.WriteLine("Subject not found.");
+                return;
+            }
+
+            _context.Subjects.Remove(subject);
+            _context.SaveChanges();
+            Console.WriteLine("Subject deleted.");
+        }
     }
 }

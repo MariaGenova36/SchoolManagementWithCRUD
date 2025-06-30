@@ -21,11 +21,13 @@ public class SchoolDbContext : DbContext
         modelBuilder.Entity<Enrollment>()
             .HasOne(e => e.Student)
             .WithMany(s => s.Enrollments)
-            .HasForeignKey(e => e.StudentId);
+            .HasForeignKey(e => e.StudentId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Enrollment>()
             .HasOne(e => e.Subject)
             .WithMany(s => s.Enrollments)
-            .HasForeignKey(e => e.SubjectId);
+            .HasForeignKey(e => e.SubjectId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

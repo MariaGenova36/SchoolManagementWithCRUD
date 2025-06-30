@@ -28,6 +28,21 @@ namespace SchoolManagementWithCRUD.Services
             }
         }
 
+        public void EditStudent(int id, string newName, int newGrade)
+        {
+            var student = _context.Students.Find(id);
+            if (student == null)
+            {
+                Console.WriteLine("Student not found.");
+                return;
+            }
+
+            student.Name = newName;
+            student.Grade = newGrade;
+            _context.SaveChanges();
+            Console.WriteLine($"Student {id} updated.");
+        }
+
         public void DeleteStudent(int id)
         {
             var student = _context.Students.Find(id);
