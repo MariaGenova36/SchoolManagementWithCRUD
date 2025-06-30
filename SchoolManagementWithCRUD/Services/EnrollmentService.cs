@@ -1,6 +1,6 @@
 ﻿using SchoolManagementWithCRUD.Models;
 
-namespace SchoolManagementConsole.Services
+namespace SchoolManagementWithCRUD.Services
 {
     public class EnrollmentService
     {
