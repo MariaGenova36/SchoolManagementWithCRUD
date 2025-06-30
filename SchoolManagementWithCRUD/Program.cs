@@ -1,41 +1,45 @@
-﻿using SchoolManagementWithCRUD.Services;
+﻿using SchoolManagementConsole.Data;
+using SchoolManagementConsole.Services;
+using SchoolManagementWithCRUD.Services;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
         using var context = new SchoolDbContext();
-        var studentService = new StudentService(context);
-        var subjectService = new SubjectService(context);
-        var enrollmentService = new EnrollmentService(context);
 
-        // Добавяне на ученици
-        studentService.AddStudent("Ivan Petrov", 11);
-        studentService.AddStudent("Elena Dimitrova", 12);
+        context.Database.EnsureCreated();
 
-        // Добавяне на предмети
-        subjectService.AddSubject("Mathematics", "Mr. Stoyanov");
-        subjectService.AddSubject("Chemistry", "Mrs. Tsvetkova");
+        if (!context.Students.Any())
+        {
+            var student1 = new Student { Name = "Ivan Petrov", Grade = 11 };
+            var student2 = new Student { Name = "Elena Dimitrova", Grade = 12 };
 
-        // Добавяне на записвания
-        enrollmentService.AddEnrollment(1, 1); 
-        enrollmentService.AddEnrollment(2, 2); 
+            // Добавяне на записвания
+            enrollmentService.AddEnrollment(1, 1); // Иван - Математика
+            enrollmentService.AddEnrollment(2, 2); // Елена - Химия
 
-        // Показване
-        studentService.ListStudents();
-        subjectService.ListSubjects();
-        enrollmentService.ListEnrollments();
+            // Извеждане на предметите
+            Console.WriteLine("\nSubjects:");
+            foreach (var subject in context.Subjects)
+            {
+                Console.WriteLine($"ID: {subject.Id} | Title: {subject.Title} | Teacher: {subject.Teacher}");
+            }
 
-        // Изтриване на първия ученик
-        studentService.DeleteStudent(1);
+            // Изтриване на първия ученик (Id = 1)
+            studentService.DeleteStudent(1);
 
-        // Преименуване на предмет
-        subjectService.EditSubjectTitle(1, "English");
+            // Преименуване на предмет с Id = 1
+            subjectService.EditSubjectTitle(1, "English");
 
-        // Показване след промени
-        Console.WriteLine("\nAfter changes:");
-        studentService.ListStudents();
-        subjectService.ListSubjects();
-        enrollmentService.ListEnrollments();
+            // Редактиране на името на първия предмет (Mathematics -> English)
+            var firstSubject = context.Subjects.FirstOrDefault();
+            if (firstSubject != null)
+            {
+                firstSubject.Title = "English";
+                context.SaveChanges();
+                Console.WriteLine($"Updated subject ID {firstSubject.Id} title to {firstSubject.Title}");
+            }
+        }
     }
 }
