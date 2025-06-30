@@ -1,12 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SchoolManagementWithCRUD.Models;
 
 namespace SchoolManagementWithCRUD.Services
 {
-    internal class StudentServices
+    public class StudentService
     {
+        private readonly SchoolDbContext _context;
+
+        public StudentService(SchoolDbContext context)
+        {
+            _context = context;
+        }
+
+        public void AddStudent(string name, int grade)
+        {
+            var student = new Student { Name = name, Grade = grade };
+            _context.Students.Add(student);
+            _context.SaveChanges();
+        }
+
+        public void ListStudents()
+        {
+            var students = _context.Students.ToList();
+            Console.WriteLine("Students:");
+            foreach (var student in students)
+            {
+                Console.WriteLine($"ID: {student.Id} | Name: {student.Name} | Grade: {student.Grade}");
+            }
+        }
+
+        public void DeleteStudent(int id)
+        {
+            var student = _context.Students.Find(id);
+            if (student != null)
+            {
+                _context.Students.Remove(student);
+                _context.SaveChanges();
+            }
+        }
     }
 }

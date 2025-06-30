@@ -1,6 +1,4 @@
-﻿using SchoolManagementConsole.Data;
-using SchoolManagementConsole.Services;
-using SchoolManagementWithCRUD.Services;
+﻿using SchoolManagementWithCRUD.Services;
 
 class Program
 {
@@ -20,18 +18,18 @@ class Program
         subjectService.AddSubject("Chemistry", "Mrs. Tsvetkova");
 
         // Добавяне на записвания
-        enrollmentService.AddEnrollment(1, 1); // Иван - Математика
-        enrollmentService.AddEnrollment(2, 2); // Елена - Химия
+        enrollmentService.AddEnrollment(1, 1); 
+        enrollmentService.AddEnrollment(2, 2); 
 
         // Показване
         studentService.ListStudents();
         subjectService.ListSubjects();
         enrollmentService.ListEnrollments();
 
-        // Изтриване на първия ученик (Id = 1)
+        // Изтриване на първия ученик
         studentService.DeleteStudent(1);
 
-        // Преименуване на предмет с Id = 1
+        // Преименуване на предмет
         subjectService.EditSubjectTitle(1, "English");
 
         // Показване след промени
