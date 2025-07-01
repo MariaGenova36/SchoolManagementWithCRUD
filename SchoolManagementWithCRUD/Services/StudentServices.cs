@@ -18,14 +18,21 @@ namespace SchoolManagementWithCRUD.Services
             _context.SaveChanges();
         }
 
-        public void ListStudents()
+        public string GetStudentsText()
         {
             var students = _context.Students.ToList();
-            Console.WriteLine("Students:");
-            foreach (var student in students)
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("Students:");
+            foreach (var s in students)
             {
-                Console.WriteLine($"ID: {student.Id} | Name: {student.Name} | Grade: {student.Grade}");
+                sb.AppendLine($"ID: {s.Id} | Name: {s.Name} | Grade: {s.Grade}");
             }
+            return sb.ToString();
+        }
+
+        public void ListStudents()
+        {
+            Console.WriteLine(GetStudentsText());
         }
 
         public void EditStudent(int id, string newName, int newGrade)

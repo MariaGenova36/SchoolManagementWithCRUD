@@ -18,15 +18,23 @@ namespace SchoolManagementWithCRUD.Services
             _context.SaveChanges();
         }
 
-        public void ListSubjects()
+        public string GetSubjectsText()
         {
             var subjects = _context.Subjects.ToList();
-            Console.WriteLine("Subjects:");
-            foreach (var subject in subjects)
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("Subjects:");
+            foreach (var s in subjects)
             {
-                Console.WriteLine($"ID: {subject.Id} | Title: {subject.Title} | Teacher: {subject.Teacher}");
+                sb.AppendLine($"ID: {s.Id} | Title: {s.Title} | Teacher: {s.Teacher}");
             }
+            return sb.ToString();
         }
+
+        public void ListSubjects()
+        {
+            Console.WriteLine(GetSubjectsText());
+        }
+
 
         public void EditSubjectTitle(int id, string newTitle)
         {

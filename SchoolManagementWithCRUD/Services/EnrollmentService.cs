@@ -45,18 +45,25 @@ namespace SchoolManagementWithCRUD.Services
             _context.SaveChanges();
         }
 
-        public void ListEnrollments()
+        public string GetEnrollmentsText()
         {
             var enrollments = _context.Enrollments
                 .Include(e => e.Student)
                 .Include(e => e.Subject)
                 .ToList();
 
-            Console.WriteLine("Enrollments:");
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("Enrollments:");
             foreach (var e in enrollments)
             {
-                Console.WriteLine($"Student: {e.Student.Name} | Subject: {e.Subject.Title} | Date: {e.EnrollmentDate.ToShortDateString()}");
+                sb.AppendLine($"Student: {e.Student.Name} | Subject: {e.Subject.Title} | Date: {e.EnrollmentDate.ToShortDateString()}");
             }
+            return sb.ToString();
+        }
+
+        public void ListEnrollments()
+        {
+            Console.WriteLine(GetEnrollmentsText());
         }
 
         public void EditEnrollment(int oldStudentId, int oldSubjectId, int newStudentId, int newSubjectId)
