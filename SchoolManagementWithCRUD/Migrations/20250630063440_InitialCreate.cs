@@ -9,7 +9,6 @@ namespace SchoolManagementWithCRUD.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // Таблица Students
             migrationBuilder.CreateTable(
                 name: "Students",
                 columns: table => new
@@ -24,7 +23,6 @@ namespace SchoolManagementWithCRUD.Migrations
                     table.PrimaryKey("PK_Students", x => x.Id);
                 });
 
-            // Таблица Subjects
             migrationBuilder.CreateTable(
                 name: "Subjects",
                 columns: table => new
@@ -39,7 +37,6 @@ namespace SchoolManagementWithCRUD.Migrations
                     table.PrimaryKey("PK_Subjects", x => x.Id);
                 });
 
-            // Таблица Enrollments (с composite ключ StudentId + SubjectId)
             migrationBuilder.CreateTable(
                 name: "Enrollments",
                 columns: table => new

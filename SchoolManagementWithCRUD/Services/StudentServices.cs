@@ -1,4 +1,5 @@
-﻿using SchoolManagementWithCRUD.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SchoolManagementWithCRUD.Models;
 
 namespace SchoolManagementWithCRUD.Services
 {
@@ -11,16 +12,23 @@ namespace SchoolManagementWithCRUD.Services
             _context = context;
         }
 
-        public void AddStudent(string name, int grade)
+        public async Task AddStudent(string name, int grade)
         {
-            var student = new Student { Name = name, Grade = grade };
-            _context.Students.Add(student);
-            _context.SaveChanges();
+            try
+            {
+                var student = new Student { Name = name, Grade = grade };
+               await _context.Students.AddAsync(student);
+               await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding student : {ex.Message}");
+            }
         }
 
-        public string GetStudentsText()
+        public async Task<string> GetStudentsText()
         {
-            var students = _context.Students.ToList();
+            var students = await ListStudents();
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("Students:");
             foreach (var s in students)
@@ -29,34 +37,59 @@ namespace SchoolManagementWithCRUD.Services
             }
             return sb.ToString();
         }
-
-        public void ListStudents()
+        public async Task ShowStudents()
         {
-            Console.WriteLine(GetStudentsText());
-        }
-
-        public void EditStudent(int id, string newName, int newGrade)
-        {
-            var student = _context.Students.Find(id);
-            if (student == null)
+            var students = await ListStudents();
+            Console.WriteLine("Students:");
+            foreach (var s in students)
             {
-                Console.WriteLine("Student not found.");
-                return;
+                Console.WriteLine($"ID: {s.Id} | Name: {s.Name} | Grade: {s.Grade}");
             }
-
-            student.Name = newName;
-            student.Grade = newGrade;
-            _context.SaveChanges();
-            Console.WriteLine($"Student {id} updated.");
+        }
+        public async Task <List<Student>> ListStudents()
+        {
+            return await _context.Students.ToListAsync();
         }
 
-        public void DeleteStudent(int id)
+        public async Task EditStudent(int id, string newName, int newGrade)
         {
-            var student = _context.Students.Find(id);
-            if (student != null)
+            try
             {
-                _context.Students.Remove(student);
-                _context.SaveChanges();
+                var student = await _context.Students.FindAsync(id);
+                if (student == null)
+                {
+                    Console.WriteLine("Student not found.");
+                    return;
+                }
+
+                student.Name = newName;
+                student.Grade = newGrade;
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"Student {id} updated.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating student: {ex.Message}");
+            }
+        }
+
+        public async Task DeleteStudent(int id)
+        {
+            try
+            {
+                var student = await _context.Students.FindAsync(id);
+                if (student == null)
+                {
+                    Console.WriteLine("Student not found.");
+                    return;
+                }
+                    _context.Students.Remove(student);
+                    await _context.SaveChangesAsync();
+                Console.WriteLine($"Student {id} deleted.");
+                }
+            catch(Exception ex) 
+            {
+                Console.WriteLine($"Error deleting student: {ex.Message}");
             }
         }
     }

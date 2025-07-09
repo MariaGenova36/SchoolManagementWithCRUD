@@ -3,7 +3,7 @@ using System;
 
 class Program
 {
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
         using var context = new SchoolDbContext();
         var studentService = new StudentService(context);
@@ -34,20 +34,20 @@ class Program
             switch (choice)
             {
                 case "1":
-                    studentService.ListStudents();
+                    await studentService.ShowStudents();
                     break;
                 case "2":
-                    subjectService.ListSubjects();
+                   await subjectService.ListSubjects();
                     break;
                 case "3":
-                    enrollmentService.ListEnrollments();
+                    await enrollmentService.ListEnrollments();
                     break;
                 case "4":
                     Console.Write("Enter student name: ");
                     var studentName = Console.ReadLine();
                     Console.Write("Enter grade: ");
                     if (int.TryParse(Console.ReadLine(), out int grade))
-                        studentService.AddStudent(studentName, grade);
+                        await studentService.AddStudent(studentName, grade);
                     else Console.WriteLine("Invalid grade.");
                     break;
                 case "5":
@@ -55,7 +55,7 @@ class Program
                     var subjectTitle = Console.ReadLine();
                     Console.Write("Enter teacher name: ");
                     var teacherName = Console.ReadLine();
-                    subjectService.AddSubject(subjectTitle, teacherName);
+                    await subjectService.AddSubject(subjectTitle, teacherName);
                     break;
                 case "6":
                     Console.Write("Enter student ID: ");
@@ -70,7 +70,7 @@ class Program
                         Console.WriteLine("Invalid subject ID.");
                         break;
                     }
-                    enrollmentService.AddEnrollment(studentId, subjectId);
+                    await enrollmentService.AddEnrollment(studentId, subjectId);
                     break;
                 case "7":
                     Console.Write("Enter student ID to edit: ");
@@ -87,7 +87,7 @@ class Program
                         Console.WriteLine("Invalid grade.");
                         break;
                     }
-                    studentService.EditStudent(editStudentId, newName, newGrade);
+                   await studentService.EditStudent(editStudentId, newName, newGrade);
                     break;
                 case "8":
                     Console.Write("Enter subject ID to edit: ");
@@ -98,7 +98,9 @@ class Program
                     }
                     Console.Write("Enter new title: ");
                     var newTitle = Console.ReadLine();
-                    subjectService.EditSubjectTitle(editSubjectId, newTitle);
+                    Console.Write("Enter new teacher: ");
+                    var newTeacher = Console.ReadLine();
+                    await subjectService.EditSubject(editSubjectId, newTitle, newTeacher);
                     break;
                 case "9":
                     Console.Write("Enter current student ID for enrollment: ");
@@ -125,18 +127,18 @@ class Program
                         Console.WriteLine("Invalid ID.");
                         break;
                     }
-                    enrollmentService.EditEnrollment(oldStudentId, oldSubjectId, newEnrollStudentId, newEnrollSubjectId);
+                    await enrollmentService.EditEnrollment(oldStudentId, oldSubjectId, newEnrollStudentId, newEnrollSubjectId);
                     break;
                 case "10":
                     Console.Write("Enter student ID to delete: ");
                     if (int.TryParse(Console.ReadLine(), out int delStudentId))
-                        studentService.DeleteStudent(delStudentId);
+                        await studentService.DeleteStudent(delStudentId);
                     else Console.WriteLine("Invalid ID.");
                     break;
                 case "11":
                     Console.Write("Enter subject ID to delete: ");
                     if (int.TryParse(Console.ReadLine(), out int delSubjectId))
-                        subjectService.DeleteSubject(delSubjectId);
+                        await subjectService.DeleteSubject(delSubjectId);
                     else Console.WriteLine("Invalid ID.");
                     break;
                 case "12":
@@ -152,10 +154,10 @@ class Program
                         Console.WriteLine("Invalid ID.");
                         break;
                     }
-                    enrollmentService.DeleteEnrollment(delEnrollStudentId, delEnrollSubjectId);
+                    await enrollmentService.DeleteEnrollment(delEnrollStudentId, delEnrollSubjectId);
                     break;
                 case "13":
-                    ExportAllToTxt(studentService, subjectService, enrollmentService);
+                    await ExportAllToTxt(studentService, subjectService, enrollmentService);
                     break;
                 case "0":
                     return;
@@ -165,11 +167,16 @@ class Program
             }
         }
     }
-    static void ExportAllToTxt(StudentService studentService, SubjectService subjectService, EnrollmentService enrollmentService)
+    static async Task ExportAllToTxt(StudentService studentService,SubjectService subjectService,EnrollmentService enrollmentService)
     {
-        System.IO.File.WriteAllText("Students.txt", studentService.GetStudentsText());
-        System.IO.File.WriteAllText("Subjects.txt", subjectService.GetSubjectsText());
-        System.IO.File.WriteAllText("Enrollments.txt", enrollmentService.GetEnrollmentsText());
+        var studentsText = await studentService.GetStudentsText();
+        var subjectsText = await subjectService.GetSubjectsText();
+        var enrollmentsText = await enrollmentService.GetEnrollmentsText();
+
+        await System.IO.File.WriteAllTextAsync("Students.txt", studentsText);
+        await System.IO.File.WriteAllTextAsync("Subjects.txt", subjectsText);
+        await System.IO.File.WriteAllTextAsync("Enrollments.txt", enrollmentsText);
+
         Console.WriteLine("All data exported to Students.txt, Subjects.txt, Enrollments.txt");
     }
 }

@@ -1,4 +1,5 @@
-﻿using SchoolManagementWithCRUD.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SchoolManagementWithCRUD.Models;
 
 namespace SchoolManagementWithCRUD.Services
 {
@@ -11,16 +12,27 @@ namespace SchoolManagementWithCRUD.Services
             _context = context;
         }
 
-        public void AddSubject(string title, string teacher)
+        public async Task AddSubject(string title, string teacher)
         {
-            var subject = new Subject { Title = title, Teacher = teacher };
-            _context.Subjects.Add(subject);
-            _context.SaveChanges();
+            try
+            {
+                var subject = new Subject { Title = title, Teacher = teacher };
+                await _context.Subjects.AddAsync(subject);
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"Subject {title} added.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding subject: {ex.Message}");
+            }
         }
-
-        public string GetSubjectsText()
+        public async Task<List<Subject>> GetAllSubjectsAsync()
         {
-            var subjects = _context.Subjects.ToList();
+            return await _context.Subjects.ToListAsync();
+        }
+        public async Task<string> GetSubjectsText()
+        {
+            var subjects = await GetAllSubjectsAsync();
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("Subjects:");
             foreach (var s in subjects)
@@ -30,34 +42,51 @@ namespace SchoolManagementWithCRUD.Services
             return sb.ToString();
         }
 
-        public void ListSubjects()
+        public async Task ListSubjects()
         {
-            Console.WriteLine(GetSubjectsText());
+            Console.WriteLine(await GetSubjectsText());
         }
 
 
-        public void EditSubjectTitle(int id, string newTitle)
+        public async Task EditSubject(int id, string newTitle, string newTeacher)
         {
-            var subject = _context.Subjects.Find(id);
-            if (subject != null)
+            try
             {
-                subject.Title = newTitle;
-                _context.SaveChanges();
+                var subject = await _context.Subjects.FindAsync(id);
+                if (subject == null)
+                {
+                    Console.WriteLine("Subject not found.");
+                    return;
+                }
+                    subject.Title = newTitle;
+                subject.Teacher = newTeacher;
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"Subject {id} updated.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating subject: {ex.Message}");
             }
         }
 
-        public void DeleteSubject(int id)
+        public async Task DeleteSubject(int id)
         {
-            var subject = _context.Subjects.Find(id);
-            if (subject == null)
+            try
             {
-                Console.WriteLine("Subject not found.");
-                return;
-            }
+                var subject = await _context.Subjects.FindAsync(id);
+                if (subject == null)
+                {
+                    Console.WriteLine("Subject not found.");
+                    return;
+                }
 
-            _context.Subjects.Remove(subject);
-            _context.SaveChanges();
-            Console.WriteLine("Subject deleted.");
-        }
-    }
+                _context.Subjects.Remove(subject);
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"Subject {id} deleted.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting subject: {ex.Message}");
+            }
+    }   }
 }

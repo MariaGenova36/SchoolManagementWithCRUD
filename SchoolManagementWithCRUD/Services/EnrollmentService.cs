@@ -12,45 +12,54 @@ namespace SchoolManagementWithCRUD.Services
             _context = context;
         }
 
-        public void AddEnrollment(int studentId, int subjectId)
+        public async Task AddEnrollment(int studentId, int subjectId)
         {
-            var studentExists = _context.Students.Any(s => s.Id == studentId);
-            var subjectExists = _context.Subjects.Any(s => s.Id == subjectId);
-
-            if (!studentExists)
+            try
             {
-                Console.WriteLine($"Student with ID {studentId} does not exist.");
-                return;
+                var studentExists = await _context.Students.AnyAsync(s => s.Id == studentId);
+                var subjectExists = await _context.Subjects.AnyAsync(s => s.Id == subjectId);
+
+                if (!studentExists)
+                {
+                    Console.WriteLine($"Student with ID {studentId} does not exist.");
+                    return;
+                }
+
+                if (!subjectExists)
+                {
+                    Console.WriteLine($"Subject with ID {subjectId} does not exist.");
+                    return;
+                }
+
+                var exists = await _context.Enrollments.AnyAsync(e => e.StudentId == studentId && e.SubjectId == subjectId);
+                if (exists)
+                {
+                    Console.WriteLine("Enrollment already exists.");
+                    return;
+                }
+
+                var enrollment = new Enrollment
+                {
+                    StudentId = studentId,
+                    SubjectId = subjectId,
+                    EnrollmentDate = DateTime.Now
+                };
+                await _context.Enrollments.AddAsync(enrollment);
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"Enrollment added: Student {studentId} -> Subject {subjectId}");
             }
-
-            if (!subjectExists)
+            catch (Exception ex)
             {
-                Console.WriteLine($"Subject with ID {subjectId} does not exist.");
-                return;
+                Console.WriteLine($"Error adding enrollment: {ex.Message}");
             }
-
-            if (_context.Enrollments.Any(e => e.StudentId == studentId && e.SubjectId == subjectId))
-            {
-                Console.WriteLine("Enrollment already exists.");
-                return;
-            }
-
-            var enrollment = new Enrollment
-            {
-                StudentId = studentId,
-                SubjectId = subjectId,
-                EnrollmentDate = DateTime.Now
-            };
-            _context.Enrollments.Add(enrollment);
-            _context.SaveChanges();
         }
 
-        public string GetEnrollmentsText()
+        public async Task<string> GetEnrollmentsText()
         {
-            var enrollments = _context.Enrollments
+            var enrollments = await _context.Enrollments
                 .Include(e => e.Student)
                 .Include(e => e.Subject)
-                .ToList();
+                .ToListAsync();
 
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("Enrollments:");
@@ -61,63 +70,72 @@ namespace SchoolManagementWithCRUD.Services
             return sb.ToString();
         }
 
-        public void ListEnrollments()
+        public async Task ListEnrollments()
         {
-            Console.WriteLine(GetEnrollmentsText());
+            Console.WriteLine(await GetEnrollmentsText());
         }
 
-        public void EditEnrollment(int oldStudentId, int oldSubjectId, int newStudentId, int newSubjectId)
+        public async Task EditEnrollment(int oldStudentId, int oldSubjectId, int newStudentId, int newSubjectId)
         {
-            var enrollment = _context.Enrollments
-                .FirstOrDefault(e => e.StudentId == oldStudentId && e.SubjectId == oldSubjectId);
-
-            if (enrollment == null)
+            try
             {
-                Console.WriteLine("Enrollment not found.");
-                return;
-            }
+                var enrollment = await _context.Enrollments.FindAsync(oldStudentId, oldSubjectId);
+                if (enrollment == null)
+                {
+                    Console.WriteLine("Enrollment not found.");
+                    return;
+                }
 
-            var studentExists = _context.Students.Any(s => s.Id == newStudentId);
-            var subjectExists = _context.Subjects.Any(s => s.Id == newSubjectId);
+                var exists = await _context.Enrollments.AnyAsync(e =>
+            e.StudentId == newStudentId && e.SubjectId == newSubjectId);
+                if (exists)
+                {
+                    Console.WriteLine("New enrollment already exists.");
+                    return;
+                }
 
-            if (!studentExists || !subjectExists)
-            {
-                Console.WriteLine("Invalid new student or subject.");
-                return;
-            }
-
-            // Изтриваме старото записване
-            _context.Enrollments.Remove(enrollment);
-            _context.SaveChanges();
-
-            // Добавяме ново записване с новите стойности
-            var newEnrollment = new Enrollment
-            {
-                StudentId = newStudentId,
-                SubjectId = newSubjectId,
-                EnrollmentDate = DateTime.Now
-            };
-
-            _context.Enrollments.Add(newEnrollment);
-            _context.SaveChanges();
-
-            Console.WriteLine($"Enrollment updated: ({oldStudentId}, {oldSubjectId}) -> ({newStudentId}, {newSubjectId})");
-        }
-
-
-        public void DeleteEnrollment(int studentId, int subjectId)
-        {
-            var enrollment = _context.Enrollments.Find(studentId, subjectId);
-            if (enrollment != null)
-            {
+                // Изтриваме старото записване
                 _context.Enrollments.Remove(enrollment);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
+
+                // Добавяме ново записване с новите стойности
+                var newEnrollment = new Enrollment
+                {
+                    StudentId = newStudentId,
+                    SubjectId = newSubjectId,
+                    EnrollmentDate = DateTime.Now
+                };
+
+                await _context.Enrollments.AddAsync(newEnrollment);
+                await _context.SaveChangesAsync();
+
+                Console.WriteLine($"Enrollment updated: ({oldStudentId}, {oldSubjectId}) -> ({newStudentId}, {newSubjectId})");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error editing enrollment: {ex.Message}");
+            }
+        }
+
+        public async Task DeleteEnrollment(int studentId, int subjectId)
+        {
+            try
+            {
+                var enrollment = await _context.Enrollments.FindAsync(studentId, subjectId);
+                if (enrollment == null)
+                {
+                    Console.WriteLine("Enrollment not found.");
+                    return;
+                }
+                _context.Enrollments.Remove(enrollment);
+                await _context.SaveChangesAsync();
                 Console.WriteLine($"Enrollment ({studentId}, {subjectId}) deleted.");
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("Enrollment not found.");
+                Console.WriteLine($"Error deleting enrollment: {ex.Message}");
             }
         }
-     }
+    }
 }
+
