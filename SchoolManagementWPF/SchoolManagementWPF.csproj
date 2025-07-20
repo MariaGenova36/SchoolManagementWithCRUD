@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SchoolManagementWithCRUD\SchoolManagementWithCRUD.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="RelayCommand.cs">
+      <Generator>MSBuild:Compile</Generator>
+    </Compile>
+    <Compile Update="SubjectsEditorWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ViewModels\SubjectsViewModel.cs">
+      <Generator>MSBuild:Compile</Generator>
+    </Compile>
+  </ItemGroup>
+
+</Project>

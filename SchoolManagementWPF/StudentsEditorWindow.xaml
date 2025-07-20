@@ -1,0 +1,24 @@
+﻿<Window x:Class="SchoolManagementWPF.StudentsEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Ученик" Height="200" Width="350">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBlock Text="Name:" />
+            <TextBox x:Name="NameInput" Margin="0,5,0,10"/>
+
+            <TextBlock Text="Grade:" />
+            <TextBox x:Name="GradeInput" Margin="0,5,0,10"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <Button Content="Save" Width="80" Margin="5" Click="Save_Click"/>
+                <Button Content="Cancel" Width="80" Margin="5" Click="Cancel_Click" IsCancel="True"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

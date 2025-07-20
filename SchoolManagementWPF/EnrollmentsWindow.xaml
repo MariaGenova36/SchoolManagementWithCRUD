@@ -1,0 +1,30 @@
+﻿<Window x:Class="SchoolManagementWPF.EnrollmentsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Enrollments" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <DataGrid ItemsSource="{Binding Enrollments}"
+                  SelectedItem="{Binding SelectedEnrollment}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  Grid.Row="0"
+                  Margin="0,0,0,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Student" Binding="{Binding Student.Name}" Width="*"/>
+                <DataGridTextColumn Header="Subject" Binding="{Binding Subject.Title}" Width="*"/>
+                <DataGridTextColumn Header="Date" Binding="{Binding EnrollmentDate, StringFormat=d}" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1">
+            <Button Content="Add" Width="100" Margin="5" Command="{Binding AddEnrollmentCommand}"/>
+            <Button Content="Edit" Width="100" Margin="5" Command="{Binding EditEnrollmentCommand}"/>
+            <Button Content="Delete" Width="100" Margin="5" Command="{Binding DeleteEnrollmentCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>

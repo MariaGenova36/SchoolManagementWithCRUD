@@ -1,0 +1,25 @@
+﻿<Window x:Class="SchoolManagementWPF.SubjectsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Subjects" Height="450" Width="700">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <DataGrid ItemsSource="{Binding Subjects}" SelectedItem="{Binding SelectedSubject}" AutoGenerateColumns="False" IsReadOnly="True" Grid.Row="0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
+                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
+                <DataGridTextColumn Header="Тeacher" Binding="{Binding Teacher}" Width="2*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" Grid.Row="1">
+            <Button Content="Add" Width="75" Margin="5" Command="{Binding AddSubjectCommand}"/>
+            <Button Content="Edit" Width="75" Margin="5" Command="{Binding EditSubjectCommand}" />
+            <Button Content="Delete" Width="75" Margin="5" Command="{Binding DeleteSubjectCommand}" />
+        </StackPanel>
+    </Grid>
+</Window>

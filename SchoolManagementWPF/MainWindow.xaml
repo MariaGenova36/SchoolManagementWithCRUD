@@ -1,0 +1,10 @@
+﻿<Window x:Class="SchoolManagementWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="School Management" Height="300" Width="400">
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,10" >
+        <Button Content="Students" Width="150" Click="OpenStudents_Click"/>
+        <Button Content="Subjects" Width="150" Click="OpenSubjects_Click"/>
+        <Button Content="Enrollments" Width="150" Click="OpenEnrollments_Click"/>
+    </StackPanel>
+</Window>
