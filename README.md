@@ -1,6 +1,6 @@
 # SchoolManagementWithCRUD
 
-A simple C# console application using **.NET** and **Entity Framework Core** to manage students,subjects and enrollments in a SQL database. It demonstrates basic **CRUD operations** (Create, Read, Update, Delete) through the console interface.
+A simple C# console application using **.NET** and **Entity Framework Core** to manage students,subjects and enrollments in a SQL database. It demonstrates basic **CRUD operations** (Create, Read, Update, Delete) through the console interface and another WPF interface.
 
 # Features
 
@@ -27,5 +27,6 @@ A simple C# console application using **.NET** and **Entity Framework Core** to 
 - Entity Framework Core
 - SQL Server / LocalDB
 - Console Application
+- WPF Application
 
 
