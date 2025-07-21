@@ -17,14 +17,33 @@ namespace SchoolManagementWPF
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            StudentName = NameInput.Text.Trim();
+            var studentName = NameInput.Text.Trim();
 
-            if (!int.TryParse(GradeInput.Text.Trim(), out int grade))
+            if (string.IsNullOrWhiteSpace(studentName))
             {
-                MessageBox.Show("Not valid grade. Please enter a number.");
+                MessageBox.Show("Please enter a valid name.", "Invalid Name", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
+            if (!System.Text.RegularExpressions.Regex.IsMatch(studentName, @"^[\p{L} ]+$"))
+            {
+                MessageBox.Show("Name must contain only letters.", "Invalid Name", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(GradeInput.Text.Trim(), out int grade))
+            {
+                MessageBox.Show("Not valid grade. Please enter a number.", "Invalid Grade", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (StudentGrade < 1 || StudentGrade > 12)
+            {
+                MessageBox.Show("Grade must be between 1 and 12.", "Invalid Grade", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            StudentName = studentName;
             StudentGrade = grade;
             DialogResult = true;
         }
