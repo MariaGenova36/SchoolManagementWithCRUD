@@ -6,5 +6,6 @@
         <Button Content="Students" Width="150" Click="OpenStudents_Click"/>
         <Button Content="Subjects" Width="150" Click="OpenSubjects_Click"/>
         <Button Content="Enrollments" Width="150" Click="OpenEnrollments_Click"/>
+        <Button Content="Export Data" Click="ExportButton_Click" Width="150" />
     </StackPanel>
 </Window>
