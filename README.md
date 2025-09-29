@@ -73,19 +73,19 @@ The project includes two interfaces:
 ### Console Interface
 
 #### List of all Students
-![List of all Students](/SchoolManagementWithCRUD/SchoolManagementWithCRUD/screenshots/Screenshot_2025-09-29_102517.png)
+![List of all Students](/SchoolManagementWithCRUD/screenshots/Screenshot_2025-09-29_102517.png)
 
 #### Adding a Student
-![Adding a Student](/SchoolManagementWithCRUD/SchoolManagementWithCRUD/screenshots/Screenshot_2025-09-29_102517.png)
+![Adding a Student](/SchoolManagementWithCRUD/screenshots/Screenshot_2025-09-29_102517.png)
 
 #### Editing a Student
-![Editing a Student](/SchoolManagementWithCRUD/SchoolManagementWithCRUD/screenshots/Screenshot_2025-09-29_102915.png)
+![Editing a Student](/SchoolManagementWithCRUD/screenshots/Screenshot_2025-09-29_102915.png)
 
 #### Removing a Student
-![Removing a Student](/SchoolManagementWithCRUD/SchoolManagementWithCRUD/screenshots/Screenshot_2025-09-29_102946.png)
+![Removing a Student](/SchoolManagementWithCRUD/screenshots/Screenshot_2025-09-29_102946.png)
 
 #### Export
-![Export](/SchoolManagementWithCRUD/SchoolManagementWithCRUD/screenshots/Screenshot_2025-09-29_103010.png)
+![Export](/SchoolManagementWithCRUD/screenshots/Screenshot_2025-09-29_103010.png)
 
 ### WPF Interface
 
