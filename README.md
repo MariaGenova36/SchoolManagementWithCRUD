@@ -90,7 +90,7 @@ The project includes two interfaces:
 ### WPF Interface
 
 #### Menu
-![Menu](/SchoolManagementWPF/screenshots/Screenshot_2025-09-29_134928.png)
+![Menu](/SchoolManagementWPF/screenshots/Screenshot_2025-09-29_141523.png)
 
 #### List of all Students
 ![List of all Students](/SchoolManagementWPF/screenshots/Screenshot_2025-09-29_134947.png)
@@ -103,3 +103,6 @@ The project includes two interfaces:
 
 #### Removing a Student
 ![Removing a Student](/SchoolManagementWPF/screenshots/Screenshot_2025-09-29_135056.png)
+
+#### Export
+![Export](/SchoolManagementWPF/screenshots/Screenshot_2025-09-29_141506.png)
